@@ -26,3 +26,4 @@
 - react-navigation/native-stack
 - date.js
 - mockapi.io
+- react-i18next
