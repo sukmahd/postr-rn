@@ -18,8 +18,9 @@ import {
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
-import FeedScreen from './Screens/FeedScreen'
-import CommentScreen from './Screens/CommentScreen';
+
+
+import Navigation from './navigation'
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -31,7 +32,7 @@ type SectionProps = PropsWithChildren<{
 function App(): JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
-      <CommentScreen/>
+      <Navigation></Navigation>
     </SafeAreaView>
   );
 }
