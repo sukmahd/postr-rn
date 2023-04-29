@@ -26,6 +26,8 @@ const styles = StyleSheet.create({
     cardContainer: {
       flexDirection: 'column',
       padding: 10,
+      backgroundColor: 'white',
+      marginBottom: 2
     },
     name: {
       fontWeight: '500',
