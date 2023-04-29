@@ -1,9 +1,5 @@
 import {
-    StyleSheet,
-    Image,
-    View,
     FlatList,
-    Pressable
 } from 'react-native'
 import { FeedItem } from '../Types/type';
 import FeedListItem from '../Components/FeedListItem'

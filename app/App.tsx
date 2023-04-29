@@ -19,6 +19,7 @@ import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
 import FeedScreen from './Screens/FeedScreen'
+import CommentScreen from './Screens/CommentScreen';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -28,15 +29,9 @@ type SectionProps = PropsWithChildren<{
 
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <FeedScreen/>
+      <CommentScreen/>
     </SafeAreaView>
   );
 }
