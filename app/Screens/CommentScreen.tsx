@@ -6,37 +6,11 @@ import { CommentItem, FeedItem } from '../Types/type';
 import FeedListItem from '../Components/FeedListItem'
 import CommentListItem from '../Components/CommentListItem'
 import { icons } from '@Assets'
-import { getComment } from '../Services'
+import { getComment, postComment } from '../Services'
 import { useAppDispatch, useAppSelector } from '../Store/hooks';
-import { selectCommentLoading, selectComments } from '../Store/commentSlice';
+import { addCommentItem, selectCommentLoading, selectComments } from '../Store/commentSlice';
 import { fetchComment } from '../Store/thunk/fetchComment';
-
-const listComment: CommentItem[] = [
-    {
-        name: 'jonny',
-        comment: 'ada apa ini?',
-        createdAt: '12 november 2021',
-        id: '3'
-    },
-    {
-        name: 'sally',
-        comment: 'Kamu siapa?',
-        createdAt: '12 november 2021',
-        id: '1'
-    },
-    {
-        name: 'ray',
-        comment: 'ada dimana',
-        createdAt: '12 november 2021',
-        id: '2'
-    },
-    {
-        name: 'mala',
-        comment: 'ada dimana',
-        createdAt: '12 november 2021',
-        id: '4'
-    }
-]
+import { useDispatch } from 'react-redux';
 
 const CommentScreen: React.FC = ({ route }) => {   
     const { feed } = route.params
@@ -71,13 +45,40 @@ const CommentScreen: React.FC = ({ route }) => {
                 <FeedListItem data={feed} />
             )}
         />
-        <FooterComponent/>
+        <FooterComponent
+            newsId={feed.id}
+        />
         </>
     )
 }
 
-const FooterComponent: React.FC = () => {
-    const [text, onChangeText] = React.useState('Useless Text');
+interface FooterProp {
+    newsId: string
+}
+
+const FooterComponent: React.FC<FooterProp> = (props) => {
+    const [text, onChangeText] = React.useState('');
+    const dispatch = useDispatch()
+
+    const onPressSend = () => {
+        let body = {
+            name: 'testing 1',
+            comment: text,
+            createAt: new Date()
+        }
+        postComment(props.newsId, body)
+        .then(response => {
+            console.log('response', response);
+            
+            dispatch(addCommentItem({
+                comment: response.data
+            }))
+        })
+        .catch(error => {
+            console.log('error', error);     
+        })
+    }
+
     return (
         <View style={styles.footerContainer}>
             <TextInput
@@ -85,7 +86,7 @@ const FooterComponent: React.FC = () => {
                 value={text}
                 onChangeText={onChangeText}
             />
-            <Pressable>
+            <Pressable onPress={onPressSend}>
                 <Image style={styles.sendIcon} source={icons.icComment}  />
             </Pressable>
         </View>

@@ -18,11 +18,18 @@ const initialState: CommentState = {
 const comment = createSlice({
     name: 'feed',
     initialState,
-    reducers:{},
+    reducers:{
+        addCommentItem: (state, action) => {
+            console.log('action', action);
+            
+            const newComment = action.payload.comment
+            state.comments = [newComment, ...state.comments]
+        }
+    },
     extraReducers:(builder) => {
         builder.addCase(fetchComment.fulfilled, (state, action) => {
             console.log("fullfilled");
-            state.comments = [...state.comments, ...action.payload.results]
+            state.comments = [...action.payload.results]
             state.isLoading = false
         })
         builder.addCase(fetchComment.pending, (state, action) => {
@@ -41,4 +48,5 @@ export const selectComments = (state: RootState) => state.comment.comments
 export const selectCommentError = (state: RootState) => state.comment.error
 export const selectCommentLoading = (state: RootState) => state.comment.isLoading
 
+export const { addCommentItem } = comment.actions
 export default comment.reducer

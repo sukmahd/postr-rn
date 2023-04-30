@@ -2787,6 +2787,13 @@
   "resolved" "https://registry.npmjs.org/cycle/-/cycle-1.0.3.tgz"
   "version" "1.0.3"
 
+"date.js@^0.3.3":
+  "integrity" "sha512-HgigOS3h3k6HnW011nAb43c5xx5rBXk8P2v/WIT9Zv4koIaVXiH2BURguI78VVp+5Qc076T7OR378JViCnZtBw=="
+  "resolved" "https://registry.npmjs.org/date.js/-/date.js-0.3.3.tgz"
+  "version" "0.3.3"
+  dependencies:
+    "debug" "~3.1.0"
+
 "dayjs@^1.8.15", "dayjs@^1.8.29":
   "integrity" "sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ=="
   "resolved" "https://registry.npmjs.org/dayjs/-/dayjs-1.11.7.tgz"
@@ -2812,6 +2819,13 @@
   "version" "4.3.4"
   dependencies:
     "ms" "2.1.2"
+
+"debug@~3.1.0":
+  "integrity" "sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g=="
+  "resolved" "https://registry.npmjs.org/debug/-/debug-3.1.0.tgz"
+  "version" "3.1.0"
+  dependencies:
+    "ms" "2.0.0"
 
 "debug@2.6.9":
   "integrity" "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA=="

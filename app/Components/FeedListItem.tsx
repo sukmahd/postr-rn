@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { icons } from '@Assets'
 import { FeedItem } from '../Types/type';
-
 type FeedItemProps = {
     data: FeedItem
 }
@@ -9,10 +8,11 @@ type FeedItemProps = {
 const FeedListItem: React.FC<FeedItemProps> = ({
     data
 }) => {
+    const date = new Date(data.createdAt)
     return (
       <View style={styles.cardContainer}>
         <Text style={styles.name}>{data.username}</Text>
-        <Text style={styles.date}>{data.createdAt}</Text>
+        <Text style={styles.date}>{date.toDateString()}</Text>
         <Text style={styles.content}>{data.content}</Text>
         <View style={styles.commentContainer}>
           <Image style={styles.commentIcon} source={icons.icComment} />
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     name: {
       fontWeight: '500',
       fontSize: 16,
+      color: 'black'
     },
     date: {
       fontSize: 14,
@@ -41,7 +42,8 @@ const styles = StyleSheet.create({
     content: {
       fontSize: 15,
       fontWeight: '400',
-      marginVertical: 6
+      marginVertical: 6,
+      color: 'black'
     },
     commentIcon: {
       width: 20,

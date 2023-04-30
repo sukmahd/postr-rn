@@ -6,7 +6,7 @@ export const fetchComment = createAsyncThunk<{ results: CommentItem[]}, {id: str
     'comments/fetchComments',
     async (body, thunkApi) => {        
         try {
-            let params = '?page=' + body.page + '&limit=' + body.limit
+            let params = '?page=' + body.page + '&limit=' + body.limit + '&sortBy=createdAt&order=desc'
             const response = await getComment(body.id, params)
             
             return thunkApi.fulfillWithValue({results: response.data})

@@ -10,10 +10,11 @@ type CommentItemProps = {
 const CommentListItem: React.FC<CommentItemProps> = ({ 
     data
 }) => {
+    const date = new Date(data.createdAt)
     return (
         <View style={styles.cardContainer}>
             <Text style={styles.name}>{data.name}</Text>
-            <Text style={styles.date}>{data.createdAt}</Text>
+            <Text style={styles.date}>{date.toDateString()}</Text>
             <Text style={styles.content}>{data.comment}</Text>
         </View>
     )
