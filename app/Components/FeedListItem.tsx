@@ -12,7 +12,7 @@ const FeedListItem: React.FC<FeedItemProps> = ({
     return (
       <View style={styles.cardContainer}>
         <Text style={styles.name}>{data.username}</Text>
-        <Text style={styles.date}>{data.date}</Text>
+        <Text style={styles.date}>{data.createdAt}</Text>
         <Text style={styles.content}>{data.content}</Text>
         <View style={styles.commentContainer}>
           <Image style={styles.commentIcon} source={icons.icComment} />

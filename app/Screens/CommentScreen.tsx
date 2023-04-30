@@ -1,19 +1,13 @@
 import {
-    FlatList, Text, View, StyleSheet, TextInput, Pressable, Image
+    FlatList, Text, View, StyleSheet, TextInput, Pressable, Image, ActivityIndicator
 } from 'react-native'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CommentItem, FeedItem } from '../Types/type';
 import FeedListItem from '../Components/FeedListItem'
 import CommentListItem from '../Components/CommentListItem'
 import { icons } from '@Assets'
+import { getComment } from '../Services'
 
-const dummyFeed: FeedItem = {
-    username: "Andi Lau",
-    comments: 10,
-    content: "Ayo kita berkelana keliling dunia dengan menggunakan awan kinton mencari dragon ball",
-    date: '17 desember 2022',
-    id: "1"
-  }
 const listComment: CommentItem[] = [
     {
         name: 'jonny',
@@ -41,24 +35,43 @@ const listComment: CommentItem[] = [
     }
 ]
 
-const CommentScreen: React.FC = () => {
+const CommentScreen: React.FC = ({ route }) => {   
+    const [comments, setComments] = useState([]) 
+    const [isLoading, setLoading] = useState<boolean>(false)
+    const { feed } = route.params
+
+    useEffect(() => {
+        fetchComment()
+    },[])
+
+    const fetchComment = () => {
+        setLoading(true)
+        let params = ''
+        getComment(feed.id, params).then( response => {
+            setLoading(false)
+            setComments(response.data)
+        })
+        .catch(error => {
+            setLoading(false)
+        })
+    }
+
     return (
         <>
         <FlatList
-            data={listComment}
+            data={comments}
             renderItem={({item}) => (
                 <CommentListItem data={item} />
             )}
-            ListHeaderComponent={HeaderComponent}
+            ListFooterComponent={() => (
+                isLoading ? <ActivityIndicator/> : <View></View>
+            )}
+            ListHeaderComponent={() => (
+                <FeedListItem data={feed} />
+            )}
         />
         <FooterComponent/>
         </>
-    )
-}
-
-const HeaderComponent: React.FC = () => {
-    return (
-        <FeedListItem data={dummyFeed} />
     )
 }
 
