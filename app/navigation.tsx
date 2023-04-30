@@ -6,11 +6,14 @@ import FeedScreen from './Screens/FeedScreen';
 import PostScreen from './Screens/PostScreen';
 import LoginScreen from './Screens/LoginScreen';
 import OptionScreen from './Screens/OptionScreen';
+import { useTranslation } from 'react-i18next';
 
 
 const Stack = createNativeStackNavigator()
 
 const Navigation: React.FC = () => {
+    const { t } = useTranslation();
+
     return (
         <NavigationContainer>
             <Stack.Navigator>
@@ -24,7 +27,7 @@ const Navigation: React.FC = () => {
                     options={({navigation}) => ({ 
                         headerRight: () => (
                             <Pressable onPress={() => navigation.navigate('Login')} style={{flexDirection:'row'}}>
-                              <Text>Logout</Text>
+                              <Text>{t('common:logout')}</Text>
                             </Pressable>
                         )
                     })}
@@ -35,12 +38,12 @@ const Navigation: React.FC = () => {
                     options={({navigation}) => ({ 
                         headerRight: () => (
                             <Pressable onPress={() => navigation.navigate('Post')} style={{flexDirection:'row'}}>
-                              <Text>New Post</Text>
+                              <Text>{t('common:new_post')}</Text>
                             </Pressable>
                         ),
                         headerLeft: () => (
                             <Pressable onPress={() => navigation.navigate('Option')} style={{flexDirection:'row'}}>
-                                <Text>Option</Text>
+                                <Text>{t('common:option')}</Text>
                             </Pressable>
                         )
                     })}

@@ -1,20 +1,53 @@
 import React from 'react';
 import { Pressable, Text, View, StyleSheet, TextInput } from "react-native"
+import { useTranslation } from 'react-i18next';
+import { postFeed } from '../Services';
+import { useNavigation } from '@react-navigation/core';
+import { useAppDispatch } from '../Store/hooks';
+import feedSlice, { addFeedItem } from '../Store/feedSlice';
+import { useDispatch } from 'react-redux';
 
 
 const PostScreen: React.FC = () => {
-    const [text, onChangeText] = React.useState('Useless Text');
+    const navigation = useNavigation()
+    const { t } = useTranslation();
+    const dispatch = useDispatch()
+
+    const [text, onChangeText] = React.useState('');
+
+    const postOnPress = () => {
+        let body = {
+            content: text,
+            longitude: 0,
+            latitude: 0,
+            username: 'testing 1',
+            comments: 0,
+            createAt: new Date()
+        }
+        postFeed(body).then(response => {
+            dispatch(addFeedItem({
+                feed: response.data
+            }))
+            navigation.goBack()
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
     return (
         <View>
             <View style={styles.header}>
-                <Pressable style={styles.cancelWrapper}>
+                <Pressable onPress={() => {
+                    navigation.goBack()
+                }} style={styles.cancelWrapper}>
                     <Text style={styles.text}>
-                        Cancel
+                        {t('common:cancel')}
                     </Text>
                 </Pressable>
-                <Pressable style={styles.postWrapper}>
+                <Pressable onPress={postOnPress} style={styles.postWrapper}>
                     <Text style={styles.text}>
-                        Post
+                        {t('common:post')}
                     </Text>
                 </Pressable>
             </View>
@@ -30,8 +63,7 @@ const PostScreen: React.FC = () => {
                 maxLength={100}
                 autoCapitalize={'none'}
                 value={text}
-                placeholder={"write post here"}
-                placeholderTextColor={'#CCCFC9'}
+                placeholder={t('common:post_placeholder')}
                 multiline
                 numberOfLines={3}
                 textAlignVertical={'top'}

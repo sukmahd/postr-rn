@@ -1,7 +1,7 @@
 export interface FeedItem {
     id: string
     username: string
-    date: string
+    createdAt: string
     content: string
     comments: number
 }

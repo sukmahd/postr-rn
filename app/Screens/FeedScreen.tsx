@@ -6,38 +6,34 @@ import FeedListItem from '../Components/FeedListItem'
 import { useNavigation } from '@react-navigation/core';
 import { useEffect, useState } from 'react';
 import { getFeeds } from '../Services'
+import { useAppDispatch, useAppSelector } from '../Store/hooks';
+import { selectFeedLoading, selectFeeds } from '../Store/feedSlice';
+import { fetchFeed } from '../Store/thunk/fetchFeed';
 
 const FeedScreen: React.FC = () => {
     const navigation = useNavigation()
-    const [feeds, setFeeds] = useState([])
-    const [isLoading, setLoading] = useState<boolean>()
+
+    const dispatch = useAppDispatch()
+    const feeds = useAppSelector(selectFeeds)
+    const isLoading = useAppSelector(selectFeedLoading)
+
+
     const [page, setPage] = useState<number>(1)
     const limit = 10
 
+    useEffect(() => {        
+        dispatch(fetchFeed({page: page, limit: limit}))
+    },[page])
 
-    useEffect(() => {
-        fetchFeeds()
-    },[])
 
-    const fetchFeeds = () => {
-        setLoading(true)
-        let params = '?page=' + page + '&limit=' + limit
-        getFeeds(params).then(response => {
-            setPage(page+1)
-            setLoading(false)
-            setFeeds([...feeds, ...response.data])
-        }).catch(error => {
-            setLoading(false)
-            console.log('error', error);
-        })
-    }
 
     const fetchMoreData = () => {
         if(!isLoading) {
-            fetchFeeds()
+            setPage(page + 1)
         }
     }
 
+    
     return (
         <FlatList
             data={feeds}

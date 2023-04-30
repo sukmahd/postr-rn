@@ -14,5 +14,5 @@ export const getComment = (newsId: string, params: any) => {
 }
 
 export const postComment = (newsId: string, data: any) => {
-    return serviceManager('', 'POST', data)
+    return serviceManager(BASE_URL + '/news/' + newsId + '/comments', 'POST', data)
 }
