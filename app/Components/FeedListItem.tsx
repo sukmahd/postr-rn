@@ -16,7 +16,6 @@ const FeedListItem: React.FC<FeedItemProps> = ({
         <Text style={styles.content}>{data.content}</Text>
         <View style={styles.commentContainer}>
           <Image style={styles.commentIcon} source={icons.icComment} />
-          <Text>{data.comments}</Text>
         </View>
       </View>
     )
