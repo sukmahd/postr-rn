@@ -7,7 +7,6 @@ interface FeedState {
     feeds: FeedItem[]
     error: string
     isLoading: boolean
-
 }
 
 const initialState: FeedState = {

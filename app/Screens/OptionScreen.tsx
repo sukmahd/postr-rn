@@ -3,15 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { t } from 'i18next';
 import { useState, useLayoutEffect } from "react";
 
-const languages = [ // Language List
-    { code: 'en', label: t('language:english') },
-    { code: 'id', label: t('language:indonesia') },
-   ];
 
 const OptionScreen: React.FC = ({ navigation, route }) => {
     const { t, i18n } = useTranslation();
     const [lang, changeLang] = useState('en');
     const selectedLanguageCode = i18n.language;
+    const languages = [ // Language List
+        { code: 'en', label: t('language:english') },
+        { code: 'id', label: t('language:indonesia') },
+       ];
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -35,7 +35,7 @@ const OptionScreen: React.FC = ({ navigation, route }) => {
                     i18n.changeLanguage(currentLang.code); // it will change the language through out the app.
                 }}
                 style={{
-                color: selectedLanguage ? "red" : '#000000',
+                color: selectedLanguage ? "red" : 'black',
                 padding: 10,
                 fontSize: 18,
                 fontWeight: selectedLanguage ? 'bold' : 'normal',

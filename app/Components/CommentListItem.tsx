@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     name: {
       fontWeight: '500',
       fontSize: 14,
+      color: 'black'
     },
     date: {
       fontSize: 14,
@@ -40,7 +41,8 @@ const styles = StyleSheet.create({
     content: {
       fontSize: 15,
       fontWeight: '400',
-      marginVertical: 6
+      marginVertical: 6,
+      color: 'black'
     },
     commentIcon: {
       width: 20,

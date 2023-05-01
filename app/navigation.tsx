@@ -1,5 +1,5 @@
 import { Pressable, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CommentScreen from './Screens/CommentScreen';
 import FeedScreen from './Screens/FeedScreen';
@@ -7,16 +7,28 @@ import PostScreen from './Screens/PostScreen';
 import LoginScreen from './Screens/LoginScreen';
 import OptionScreen from './Screens/OptionScreen';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { resetUser } from './Store/userSlice';
 
 
 const Stack = createNativeStackNavigator()
 
 const Navigation: React.FC = () => {
     const { t } = useTranslation();
+    const dispatch = useDispatch()
+
+    const logout = (navigation: any) => {
+        dispatch(resetUser({}))
+        navigation.navigate('Login')
+    }
 
     return (
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator
+                screenOptions={{
+                    headerTitleAlign: 'center'
+                }}
+            >
                 <Stack.Screen
                     name="Login"
                     component={LoginScreen}
@@ -26,8 +38,8 @@ const Navigation: React.FC = () => {
                     component={OptionScreen}
                     options={({navigation}) => ({ 
                         headerRight: () => (
-                            <Pressable onPress={() => navigation.navigate('Login')} style={{flexDirection:'row'}}>
-                              <Text>{t('common:logout')}</Text>
+                            <Pressable onPress={() => logout(navigation)} style={{flexDirection:'row'}}>
+                              <Text style={{color: 'black'}}>{t('common:logout')}</Text>
                             </Pressable>
                         )
                     })}
@@ -38,12 +50,12 @@ const Navigation: React.FC = () => {
                     options={({navigation}) => ({ 
                         headerRight: () => (
                             <Pressable onPress={() => navigation.navigate('Post')} style={{flexDirection:'row'}}>
-                              <Text>{t('common:new_post')}</Text>
+                              <Text style={{color: 'black'}}>{t('common:new_post')}</Text>
                             </Pressable>
                         ),
                         headerLeft: () => (
                             <Pressable onPress={() => navigation.navigate('Option')} style={{flexDirection:'row'}}>
-                                <Text>{t('common:option')}</Text>
+                                <Text style={{color: 'black'}}>{t('common:option')}</Text>
                             </Pressable>
                         )
                     })}

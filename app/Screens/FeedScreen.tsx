@@ -43,7 +43,7 @@ const FeedScreen: React.FC = () => {
                         feed: item
                     })
                 }}>
-                    <FeedListItem data={item} />
+                    <FeedListItem key={item.id} data={item} />
                 </Pressable>
             )}
             ListFooterComponent={() => (

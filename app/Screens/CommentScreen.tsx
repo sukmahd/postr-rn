@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../Store/hooks';
 import { addCommentItem, selectCommentLoading, selectComments } from '../Store/commentSlice';
 import { fetchComment } from '../Store/thunk/fetchComment';
 import { useDispatch } from 'react-redux';
+import { selectCurrentUser } from '../Store/userSlice';
 
 const CommentScreen: React.FC = ({ route }) => {   
     const { feed } = route.params
@@ -58,25 +59,31 @@ interface FooterProp {
 
 const FooterComponent: React.FC<FooterProp> = (props) => {
     const [text, onChangeText] = React.useState('');
+    const [isLoading, setLoading] = useState(false)
     const dispatch = useDispatch()
+    const user = useAppSelector(selectCurrentUser)
 
     const onPressSend = () => {
-        let body = {
-            name: 'testing 1',
-            comment: text,
-            createAt: new Date()
+        if (text != "" && !isLoading) {
+            setLoading(true)
+            let body = {
+                name: user,
+                comment: text,
+                createAt: new Date()
+            }
+            postComment(props.newsId, body)
+            .then(response => {           
+                setLoading(false) 
+                onChangeText('')
+                dispatch(addCommentItem({
+                    comment: response.data
+                }))
+            })
+            .catch(error => {
+                setLoading(false) 
+                console.log('error', error);     
+            })
         }
-        postComment(props.newsId, body)
-        .then(response => {
-            console.log('response', response);
-            
-            dispatch(addCommentItem({
-                comment: response.data
-            }))
-        })
-        .catch(error => {
-            console.log('error', error);     
-        })
     }
 
     return (
@@ -85,10 +92,17 @@ const FooterComponent: React.FC<FooterProp> = (props) => {
                 style={styles.commentInput}
                 value={text}
                 onChangeText={onChangeText}
+                maxLength={100}
             />
-            <Pressable onPress={onPressSend}>
-                <Image style={styles.sendIcon} source={icons.icComment}  />
-            </Pressable>
+            {
+                isLoading ? 
+                <ActivityIndicator></ActivityIndicator>
+                :
+                <Pressable onPress={onPressSend}>
+                    <Image style={styles.sendIcon} source={icons.icComment}  />
+                </Pressable>
+            }
+           
         </View>
     )
 }
@@ -99,6 +113,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderWidth: 1,
         padding: 10,
+        color: 'black'
       },
     sendIcon: {
         width:30, 

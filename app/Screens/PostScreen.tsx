@@ -1,38 +1,73 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pressable, Text, View, StyleSheet, TextInput } from "react-native"
 import { useTranslation } from 'react-i18next';
 import { postFeed } from '../Services';
 import { useNavigation } from '@react-navigation/core';
-import { useAppDispatch } from '../Store/hooks';
-import feedSlice, { addFeedItem } from '../Store/feedSlice';
+import { useAppSelector } from '../Store/hooks';
+import { addFeedItem } from '../Store/feedSlice';
 import { useDispatch } from 'react-redux';
-
+import { selectCurrentUser, selectUserLocation } from '../Store/userSlice';
+import GetLocation from 'react-native-get-location'
+import { setLocation } from "../Store/userSlice"
 
 const PostScreen: React.FC = () => {
     const navigation = useNavigation()
+    const [isLoading, setLoading] = useState(false)
     const { t } = useTranslation();
     const dispatch = useDispatch()
 
     const [text, onChangeText] = React.useState('');
+    const user = useAppSelector(selectCurrentUser)
+    const location = useAppSelector(selectUserLocation)
 
-    const postOnPress = () => {
-        let body = {
-            content: text,
-            longitude: 0,
-            latitude: 0,
-            username: 'testing 1',
-            comments: 0,
-            createAt: new Date()
-        }
-        postFeed(body).then(response => {
-            dispatch(addFeedItem({
-                feed: response.data
+    useEffect(() => {
+        getLocation()
+    },[])
+    
+    const getLocation = () => {
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: false,
+            timeout: 10000,
+        })
+        .then(locResult => {
+            dispatch(setLocation({
+                location: { 
+                    latitude: locResult.latitude, 
+                    longitude: locResult.longitude
+                }
             }))
-            navigation.goBack()
         })
         .catch(error => {
-            console.log(error);
+            const { code, message } = error;
+            console.warn(code, message);
         })
+    }
+
+    const postOnPress = () => {
+        console.log('lokasi', location);
+        
+        if (text != "" && !isLoading) {
+            setLoading(true)
+            let body = {
+                content: text,
+                longitude: location.longitude,
+                latitude: location.latitude,
+                username: user,
+                comments: 0,
+                createAt: new Date()
+            }
+            postFeed(body).then(response => {
+                dispatch(addFeedItem({
+                    feed: response.data
+                }))
+                setLoading(false)
+                navigation.goBack()
+            })
+            .catch(error => {
+                setLoading(false)
+                console.log(error);
+            })
+        }
     }
 
     return (
@@ -56,7 +91,8 @@ const PostScreen: React.FC = () => {
                     borderBottomWidth:1, 
                     borderBottomColor: 'black',
                     marginHorizontal: 10,
-                    lineHeight: 16
+                    lineHeight: 16,
+                    color: 'black'
                 }}
                 onChangeText={onChangeText}
                 // onSubmitEditing={() => onSubmitEditing && onSubmitEditing()}
@@ -68,7 +104,7 @@ const PostScreen: React.FC = () => {
                 numberOfLines={3}
                 textAlignVertical={'top'}
           />
-          <Text style={{marginHorizontal:10}}>{text.length}/100</Text>
+          <Text style={{marginHorizontal:10, color: 'black'}}>{text.length}/100</Text>
         </View>
     )
 }
