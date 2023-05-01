@@ -27,3 +27,8 @@
 - date.js
 - mockapi.io
 - react-i18next
+- react-redux
+- redux-thunk
+- unique-names-generator
+- react-native-get-location
+- redux-toolkit
